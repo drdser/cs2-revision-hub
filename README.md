@@ -1,6 +1,6 @@
 # CS2 Final Exam Revision Hub
 
-### ▶ [drdser.github.io/cs2-revision-hub](https://drdser.github.io/cs2-revision-hub/)
+### ▶ [ysf-3.github.io/cs2-revision-hub](https://ysf-3.github.io/cs2-revision-hub/)
 
 An open-source revision website for the CS2 final exam, covering **Chapters 9–15**.
 No install, no account — students just open the link.
@@ -89,7 +89,7 @@ claim that rests on the lectures alone.
 Requires **Node.js 20.19+** (or 22.12+).
 
 ```bash
-git clone https://github.com/drdser/cs2-revision-hub.git
+git clone https://github.com/YSF-3/cs2-revision-hub.git
 cd cs2-revision-hub
 npm install
 npm run dev
