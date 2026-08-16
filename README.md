@@ -28,6 +28,7 @@ progress lives in the student's own browser.
 | **💻 Coding Practice** | 19 programming tasks in three size bands, each gated behind a hint before the solution |
 | **⚡ Quick Practice** | 5 / 10 / 20 questions, exam-level only, weak areas, or random output |
 | **⭐ Saved / ❌ Mistakes / 📊 Progress** | Bookmarks, a re-drill list of wrong answers, and accuracy by chapter and type |
+| **🔄 Cross-device sync** | Optional. A nickname and PIN carry progress between a laptop and a phone, with no email and no account. Off unless configured |
 | **🪤 Exam Traps / 📄 Cheat Sheet** | 26 worked traps and a 12-section sheet you can read in 10–15 minutes |
 
 ### Question bank
@@ -109,6 +110,9 @@ Open the URL that Vite prints (usually <http://localhost:5173>).
 | `npm run smoke` | Full browser test of every page and interaction (see below) |
 | `npm run bundle` | Inline everything into one self-contained HTML file |
 | `npm run verify:single` | Prove that single file works offline with zero requests |
+| `npm run test:merge` | Unit-test the sync merge (27 cases) |
+| `npm run sync:mock` | Run the mock sync backend on port 4400 |
+| `npm run test:sync` | Two-device cross-device sync test in real browsers |
 
 ### Running the browser smoke test
 
@@ -225,6 +229,35 @@ will.
 
 ---
 
+## Cross-device sync (optional)
+
+Out of the box the site keeps progress in the student's browser and nothing
+leaves the device. If you want a student's answers to follow them from a laptop
+to a phone, [docs/SYNC-SETUP.md](docs/SYNC-SETUP.md) walks through wiring up a
+free Supabase project in about 15 minutes.
+
+How it works, briefly:
+
+- The student picks a **nickname and a PIN**. No email, no real name, no account.
+- Those are put through 310,000 rounds of PBKDF2 **in the browser**. That yields
+  an AES-GCM key that never leaves the device, plus a verifier the server uses to
+  reject a wrong PIN.
+- Progress is **encrypted before it is sent**. The database holds an opaque blob,
+  so a full dump would reveal nothing about what any student answered.
+- Devices **merge** rather than overwrite: per question the newer answer wins,
+  bookmarks are unioned, and mock results are kept from both. Working offline on
+  two devices never loses either side's work.
+- The row key is derived from the **nickname alone**, so a mistyped PIN finds the
+  real record and fails loudly instead of silently starting an empty one.
+- The local copy is always the source of truth. If the backend is down or paused,
+  the site keeps working and syncs later.
+
+The trade-off is stated plainly in the setup guide: because the server cannot
+decrypt anything, **there is no PIN reset**.
+
+With no backend configured, the sync panel does not render and none of this code
+runs.
+
 ## Accessibility and privacy
 
 - Semantic HTML, a skip link, keyboard-navigable controls, `aria-pressed` on
@@ -232,9 +265,11 @@ will.
 - Correct and incorrect are shown with a word and an icon as well as a colour,
   so the result never depends on colour alone.
 - Code blocks scroll inside their own container; the page never scrolls sideways.
-- No account, no tracking, no analytics, no network requests after load. Progress
-  is stored under `cs2hub.progress.v1` in `localStorage` and can be wiped from the
-  Progress page.
+- No account, no tracking, no analytics. With sync off there are no network
+  requests after load at all. Progress is stored under `cs2hub.progress.v1` in
+  `localStorage` and can be wiped from the Progress page.
+- With sync on, the only thing transmitted is a ciphertext blob under a hashed
+  id. No personal information is collected either way.
 
 ## Tech stack
 

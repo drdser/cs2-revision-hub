@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useProgress } from '../hooks/useProgress';
 import { CHAPTER_TITLE, TYPE_LABEL, TYPE_ORDER } from '../utils/labels';
 import { Button, Callout, Card, PageHeader, ProgressBar, SectionHeading } from '../components/ui';
+import { SyncPanel } from '../components/SyncPanel';
 
 function AccuracyRow({
   label,
@@ -50,8 +51,12 @@ export function Progress() {
       <PageHeader
         icon="📊"
         title="Progress"
-        subtitle="Everything here is stored in this browser only. No account, no server, no analytics."
+        subtitle="No analytics, and no personal information is ever collected. Turn on sync below if you want your progress to follow you to another device."
       />
+
+      <section aria-labelledby="sync-heading" className="mb-8">
+        <SyncPanel />
+      </section>
 
       <section aria-labelledby="overall-heading" className="mb-8">
         <SectionHeading id="overall-heading">Overall</SectionHeading>

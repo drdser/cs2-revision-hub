@@ -22,5 +22,7 @@ jobs:
         run: npm run validate
       - name: Lint
         run: npm run lint
+      - name: Unit-test the sync merge
+        run: npm run test:merge
       - name: Type-check and build
         run: npm run build

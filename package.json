@@ -9,10 +9,13 @@
     "preview": "vite preview",
     "lint": "oxlint",
     "validate": "tsx scripts/validate-bank.ts",
-    "check": "npm run validate && npm run lint && npm run build",
+    "check": "npm run validate && npm run test:merge && npm run lint && npm run build",
     "smoke": "tsx scripts/smoke-test.ts",
     "bundle": "tsx scripts/bundle-single-file.ts",
-    "verify:single": "node scripts/verify-single.mjs"
+    "verify:single": "node scripts/verify-single.mjs",
+    "test:merge": "tsx scripts/test-merge.ts",
+    "sync:mock": "node scripts/mock-sync-server.mjs 4400",
+    "test:sync": "node scripts/test-sync-e2e.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

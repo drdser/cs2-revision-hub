@@ -42,6 +42,11 @@ jobs:
         run: npm run build
         env:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/
+          # Optional. Set these as repository VARIABLES to switch on cross-device
+          # sync; see docs/SYNC-SETUP.md. Left empty, sync stays off entirely and
+          # the site is local-only, which is the default.
+          VITE_SYNC_URL: ${{ vars.VITE_SYNC_URL }}
+          VITE_SYNC_ANON_KEY: ${{ vars.VITE_SYNC_ANON_KEY }}
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

@@ -9,6 +9,7 @@ import {
 } from 'react';
 import type { AttemptResult, MockExamResult, ProgressState, Question } from '../types';
 import { allQuestions, gradedQuestions, questionById } from '../data/questions';
+import { mergeProgress } from '../sync/merge';
 
 const STORAGE_KEY = 'cs2hub.progress.v1';
 
@@ -41,6 +42,10 @@ export interface Stats {
 }
 
 interface ProgressContextValue {
+  /** The whole persisted state, for the sync layer to read and merge. */
+  state: ProgressState;
+  /** Merge a copy pulled from another device into this one. Never overwrites. */
+  applyRemote: (remote: ProgressState) => void;
   attempts: ProgressState['attempts'];
   bookmarks: string[];
   mockResults: MockExamResult[];
@@ -101,6 +106,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const reset = useCallback(() => setState(EMPTY), []);
 
+  const applyRemote = useCallback((remote: ProgressState) => {
+    setState((prev) => mergeProgress(prev, remote));
+  }, []);
+
   const value = useMemo<ProgressContextValue>(() => {
     const { attempts, bookmarks, mockResults } = state;
     const entries = Object.entries(attempts);
@@ -147,6 +156,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       });
 
     return {
+      state,
+      applyRemote,
       attempts,
       bookmarks,
       mockResults,
@@ -171,7 +182,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       bookmarkedQuestions,
       weakChapters,
     };
-  }, [state, recordAttempt, clearAttempt, toggleBookmark, addMockResult, reset]);
+  }, [state, applyRemote, recordAttempt, clearAttempt, toggleBookmark, addMockResult, reset]);
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;
 }
