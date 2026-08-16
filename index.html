@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CS2 Final Exam Revision Hub - Chapters 9-15. Practice MCQs, true/false, Java output tracing, code completion and programming questions." />
+    <title>CS2 Final Exam Revision Hub</title>
+    <script>
+      // Resolve the theme before first paint to avoid a flash of the wrong one.
+      // Precedence: the student's own choice, then a data-theme stamped by an
+      // embedding host, then the OS preference.
+      (function () {
+        var root = document.documentElement;
+        var stored = null;
+        try {
+          stored = localStorage.getItem('cs2hub.theme');
+        } catch (e) {
+          /* localStorage unavailable (private mode); fall through to host / OS */
+        }
+        var stamped = root.getAttribute('data-theme');
+        var dark;
+        if (stored) dark = stored === 'dark';
+        else if (stamped) dark = stamped === 'dark';
+        else dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) root.classList.add('dark');
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
