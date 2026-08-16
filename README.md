@@ -1,6 +1,9 @@
 # CS2 Final Exam Revision Hub
 
+### ▶ [drdser.github.io/cs2-revision-hub](https://drdser.github.io/cs2-revision-hub/)
+
 An open-source revision website for the CS2 final exam, covering **Chapters 9–15**.
+No install, no account — students just open the link.
 
 301 questions across six formats, chapter notes, ranked exam predictions, a timed
 mock final, and a condensed cheat sheet. No account, no server, no analytics —
@@ -85,7 +88,7 @@ claim that rests on the lectures alone.
 Requires **Node.js 20.19+** (or 22.12+).
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/drdser/cs2-revision-hub.git
 cd cs2-revision-hub
 npm install
 npm run dev
@@ -104,6 +107,8 @@ Open the URL that Vite prints (usually <http://localhost:5173>).
 | `npm run validate` | Audit the question bank for integrity errors |
 | `npm run check` | `validate` + `lint` + `build` — run this before committing |
 | `npm run smoke` | Full browser test of every page and interaction (see below) |
+| `npm run bundle` | Inline everything into one self-contained HTML file |
+| `npm run verify:single` | Prove that single file works offline with zero requests |
 
 ### Running the browser smoke test
 
@@ -148,8 +153,11 @@ netlify deploy --prod
 
 ### GitHub Pages
 
-A workflow at `.github/workflows/deploy.yml` builds and publishes on every push
-to `main`. To enable it:
+**This repository is already deployed this way** — every push to `main` rebuilds
+and republishes automatically.
+
+A workflow at `.github/workflows/deploy.yml` handles it. To set the same thing up
+on a fork:
 
 1. Push the repository to GitHub.
 2. Go to **Settings → Pages** and set **Source** to **GitHub Actions**.
